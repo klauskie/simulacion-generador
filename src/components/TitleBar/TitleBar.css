@@ -1,0 +1,10 @@
+.bar {
+    background-color: #FFFFFF;
+    border: 1px solid #F8F7F8;
+    text-align: left;
+    padding: 1% 0;
+    border-bottom-color: #E1E1E1;
+    margin-bottom: 1.5%;
+    border-left: none;
+    border-right: none;
+}
