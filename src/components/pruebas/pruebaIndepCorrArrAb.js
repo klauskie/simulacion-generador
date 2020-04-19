@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import TitleBar from '../TitleBar/TitleBar';
 
 const PruebaIndepCorrArrAb = () => {
     let [rawList, setRawList] = useState("");
@@ -80,23 +81,26 @@ const PruebaIndepCorrArrAb = () => {
     }
 
     return (
-        <div>
-            <div className='row d-flex justify-content-center'>
-                <h1>
-                    Prueba: Corridas Arriba y Abajo
-                </h1>
-            </div>
+        <div className="container">
+
+            <TitleBar title="Prueba: Corridas Arriba y Abajo" />
+
             <div className='form-group'>
-                <div className='row'>
-                    <div className=''>
-                        <textarea id="list" onChange={(e) => setRawList(e.target.value)} />
+
+                <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon1">Input: </span>
+                    </div>
+                    <textarea id="list" onChange={(e) => setRawList(e.target.value)} />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="basic-addon2">CSV</span>
                     </div>
                 </div>
-                <div className='row'>
-                    <div className=''>
-                        <div className='btn btn-secondary' onClick={(e) => calculate()}>Generar</div>
-                    </div>
+
+                <div className="input-group mb-3">
+                    <div className='btn btn-primary' onClick={(e) => calculate()}>Generar</div>
                 </div>
+
             </div>
             <div className="row">
                 <p>Alfa = 5% (1.96)</p> <br />
@@ -104,7 +108,7 @@ const PruebaIndepCorrArrAb = () => {
             <div className="row">
                 <p>{getMessage()}</p>
             </div>
-            <div className="row">
+            {display &&
                 <table className='table'>
                     <thead>
                         <tr>
@@ -125,7 +129,7 @@ const PruebaIndepCorrArrAb = () => {
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            }
         </div>
     )
 }

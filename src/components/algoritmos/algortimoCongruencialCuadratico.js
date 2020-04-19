@@ -116,7 +116,7 @@ const AlgoritmoCongruencialCuadratico = () => {
                 </div>
             </div>
             <div className='row'>
-                <p>D tiene un valor de: {d}</p>
+                <p>D: {d}</p>
                 <table className='table table-bordered'>
                     <thead>
                         <tr>

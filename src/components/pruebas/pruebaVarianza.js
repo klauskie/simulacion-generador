@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import chiSquareInverse from 'inv-chisquare-cdf'
+import TitleBar from '../TitleBar/TitleBar';
 
 const PruebaVarianza = () => {
     let [c, setC] = useState('')
-    let [currentNum, setCurrentNum] = useState('');
     let [numbersCSVString, setNumbersCSVString] = useState('');
     let [numbers, setNumbers] = useState([]);
-    let [acepta, setAcepta] = useState(false);
-    let [testRun, setTestRun] = useState(false);
     let [media, setMedia] = useState(0);
     let [alpha, setAlpha] = useState(0.05);
     let [limitI, setLimitI] = useState(0);
     let [limitS, setLimitS] = useState(0);
     let [variance, setVariance] = useState(0);
+    let [display, setDisplay] = useState(false);
 
     useEffect(() => {
         let degreeFreed = numbers.length ? numbers.length - 1 : 1;
@@ -28,117 +27,141 @@ const PruebaVarianza = () => {
         setVariance(temp / (numbers.length - 1));
     }, [media])
 
-    useEffect(() => {
-        if (limitI < variance && limitS > variance) {
-            setAcepta(true);
-        }
-        if (variance > 0)
-            setTestRun(true);
-    }, [variance])
 
-    const addCSVValues = () => {
-        if (parseFloat(c)) {
-            let nums = numbersCSVString.split(',').map((e) => parseFloat(e));
-            setAlpha(parseFloat(c))
-            setNumbers([...nums])
+    const getMessage = () => {
+        if (display) {
+            if (limitI < variance && limitS > variance) {
+                return "No se puede rechazar Ho"
+            } else {
+                return "Se rechaza Ho"
+            }
         }
     }
-    const addValueToArray = () => {
-        setNumbers([...numbers, currentNum]);
-        setCurrentNum('');
+
+    const inputToList = () => {
+        let cleanedList = numbersCSVString.split(',').map((x) => {
+            return x.trim()
+        })
+        return cleanedList
     }
 
     const calculateMed = () => {
-        if (numbers.length > 0) {
-            let sum = numbers.reduce((prev, curr) => {
+        let list = inputToList()
+        setNumbers(list)
+        if (list.length > 0) {
+            let sum = list.reduce((prev, curr) => {
                 return (Number(prev) + Number(curr)).toFixed(4)
-            }
-            )
-            setMedia(sum / numbers.length)
+            })
+            setMedia(sum / list.length)
         }
     }
 
+    const calculate = () => {
+        calculateMed()
+        setDisplay(true)
+    }
+
     return (
-        <div>
-            <div className='row d-flex justify-content-center'>
-                <h1>
-                    Prueba de Varianza
-                </h1>
-            </div>
+        <div className="container">
+            <TitleBar title="Prueba de Varianza" />
             <div className='form-group'>
-                <div className='row'>
-                    <div className='col-6 d-flex justify-content-between inputs' >
-                        <label for='semilla'>Nivel de Confianza:</label>
-                        <input id='semilla' type='text' value={c} onChange={(e) => setC(e.target.value)} />
+
+                <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon1">Alpha: </span>
+                    </div>
+                    <input id='semilla' type='text' value={c} onChange={(e) => setC(e.target.value)} />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="basic-addon2">nivel de confianza</span>
                     </div>
                 </div>
-                <div className='row '>
-                    <div className='col-6 d-flex flex-column'>
-                        <div className='d-flex flex-column'>
-                            <label for='numero'>Ingresar digitos de uno en uno:</label>
-                            <div className='d-flex'>
-                                <input id='numero' type='text' value={currentNum} onChange={(e) => setCurrentNum(e.target.value)} />
-                                <div className='btn btn-primary ml-auto p-2' onClick={(e) => addValueToArray()}>Agregar</div>
-                            </div>
-                        </div>
-                        <div className='d-flex flex-column'>
-                            <label for='csv'>Ingresar digitos separados por comas (Estilo de un csv):</label>
-                            <div className='d-flex'>
-                                <input id='csv' type='text' value={numbersCSVString} onChange={(e) => setNumbersCSVString(e.target.value)} />
-                                <div className='btn btn-primary ml-auto p-2' onClick={(e) => addCSVValues()}>Agregar</div>
-                            </div>
-                        </div>
+
+                <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon1">Input: </span>
                     </div>
-                    <div className='col-6 d-flex flex-wrap inputs' >
-                        {numbers.map((num) => {
-                            return <p className='number-list'>{num}</p>
-                        })}
+                    <textarea id="list" onChange={(e) => setNumbersCSVString(e.target.value)} />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="basic-addon2">CSV</span>
                     </div>
                 </div>
-                <div className='row'>
-                    <div className='col-6 d-flex justify-content-end inputs'>
-                        <div className='btn btn-primary' onClick={(e) => calculateMed()}>Hacer Prueba</div>
-                    </div>
+
+                <div className="input-group mb-3">
+                    <div className='btn btn-primary' onClick={(e) => calculate()}>Generar</div>
                 </div>
             </div>
-            <div className='row'>
-                {
-                    testRun ?
-                        <div>
-                            {acepta ?
-                                <div className="card text-white bg-secondary mb-3" >
-                                    <div className="card-header">No se puede negar la hipotesis</div>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Dado la varianza = {variance}, se encuentra dentro de los límites y no se puede rechazar el
-                                planteamiento (Con un nivel de confianza {c}) </h5>
-                                        <div className="row">
-                                            <div className="col-6 d-flex">
-                                                <p className="card-text">LI= {limitI}</p>
-                                                <p className="card-text ml-auto p-2">LS= {limitS}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> : <div className="card text-white bg-secondary mb-3" >
-                                    <div className="card-header">Se niega la hipotesis</div>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Como el ṝ = {variance}, no se encuentra dentro de los límites y se puede rechazar el
-                                plnateamiento que el conjunto de números tiene media 0.5 (Con un nivel de confianza {c}) </h5>
-                                        <div className="row">
-                                            <div className="col-6 d-flex">
-                                                <p className="card-text">LI= {limitI}</p>
-                                                <p className="card-text ml-auto p-2">LS= {limitS}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                        :
-                        ''
-                }
+            <div className="row">
+                <p>{getMessage()}</p>
             </div>
+
+            {display &&
+                <div className="row">
+                    <table className='table'>
+                        <thead>
+                            <tr>
+                                <th scope="col">Tamaño</th>
+                                <th scope="col">Li</th>
+                                <th scope="col">Ls</th>
+                                <th scope="col">V(r)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{numbers.length}</td>
+                                <td>{limitI.toFixed(4)}</td>
+                                <td>{limitS.toFixed(4)}</td>
+                                <td>{variance.toFixed(4)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
+
         </div>
     )
 }
 
 export default PruebaVarianza
+
+/*
+0.0449,
+0.1733,
+0.5746,
+0.049,
+0.8406,
+0.849,
+0.92,
+0.2564,
+0.6015,
+0.6694,
+0.3972,
+0.7025,
+0.1055,
+0.1247,
+0.1977,
+0.0125,
+0.63,
+0.2531,
+0.8297,
+0.6483,
+0.6972,
+0.9582,
+0.9085,
+0.8524,
+0.5514,
+0.0316,
+0.3587,
+0.7041,
+0.5915,
+0.2523,
+0.2545,
+0.3044,
+0.0207,
+0.1067,
+0.3857,
+0.1746,
+0.3362,
+0.1589,
+0.3727,
+0.4145
+*/

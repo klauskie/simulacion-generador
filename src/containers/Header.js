@@ -5,7 +5,7 @@ class Header extends Component {
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-                <span className="navbar-brand">Simulacion: generador</span>
+                <Link to='/' className="navbar-brand" >Simulación: generador</Link>
                 <button id="closeNav" className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -39,8 +39,6 @@ class Header extends Component {
                                 <Link to='/prueba/poker' className="dropdown-item">Poker</Link>
                                 <Link to='/prueba/series' className="dropdown-item">Series</Link>
                                 <Link to='/prueba/huecos' className="dropdown-item">Huecos</Link>
-                                <Link to='/prueba/distribucion-chi-cuadrada' className="dropdown-item">Distribución Chi Cuadrada</Link>
-                                <Link to='/prueba/kolmogorov-smirnov' className="dropdown-item">Kolmogorov-Smirnov</Link>
                             </div>
                         </li>
                         <li className="nav-item dropdown">

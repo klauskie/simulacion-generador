@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import chiSquareInverse from "inv-chisquare-cdf";
+import TitleBar from "../TitleBar/TitleBar";
 
 const PruebaPoker = () => {
     const [nums, setNums] = useState([]);
@@ -350,29 +351,37 @@ const PruebaPoker = () => {
     };
 
     return (
-        <div>
-            <p>Alpha:</p>
-            <input
-                placeholder="Alpha"
-                value={alpha}
-                onChange={(e) => setAlpha(e.target.value)}
-            />
-            <p>Lista de numeros:</p>
+        <div className="container">
+            <TitleBar title="Prueba Poker" />
 
-            <textarea
-                id="csv"
-                type="text"
-                value={numbersCSVString}
-                onChange={(e) => setNumbersCSVString(e.target.value)}
-            />
-            <div
-                className="btn btn-primary ml-auto p-2"
-                onClick={() => addCSVValues()}
-            >
-                Agregar
-      </div>
-            {handleConclusion()}
-            <button onClick={() => solve5D()}>Run Test</button>
+            <div className="form-group">
+                <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon1">Alpha: </span>
+                    </div>
+                    <input type='number' value={alpha} onChange={(e) => setAlpha(e.target.value)} />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="basic-addon2">nivel de confianza</span>
+                    </div>
+                </div>
+
+                <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon1">Input (CSV): </span>
+                    </div>
+                    <textarea id="csv" onChange={(e) => setNumbersCSVString(e.target.value)} />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="basic-addon2">
+                            <div className="btn" onClick={() => addCSVValues()}>Agregar Numeros</div>
+                        </span>
+                    </div>
+                </div>
+
+                <div className="input-group mb-3">
+                    <div className='btn btn-primary' onClick={(e) => solve5D()}>Run</div>
+                </div>
+            </div>
+
 
             <table className="table">
                 <thead>
@@ -440,8 +449,50 @@ const PruebaPoker = () => {
                     </tr>
                 </tbody>
             </table>
-        </div>
+            <p>
+                <small>
+                    Ingresa los numeros separados por comas y en formato "0.Num", no
+                    ".Num"
+        </small>
+            </p>
+            {handleConclusion()}
+        </div >
     );
 };
 
 export default PruebaPoker;
+
+/*
+0.06141,
+0.72484,
+0.94107,
+0.56766,
+0.14411,
+0.87648,
+0.81792,
+0.4899,
+0.18590,
+0.06060,
+0.11223,
+0.64794,
+0.52953,
+0.50502,
+0.30444,
+0.70688,
+0.25357,
+0.31555,
+0.04127,
+0.67347,
+0.28103,
+0.99367,
+0.44598,
+0.73997,
+0.27813,
+0.62182,
+0.82578,
+0.85923,
+0.51483,
+0.09099
+
+
+*/

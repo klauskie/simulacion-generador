@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
+import Home from '../Home/Home'
 import AlgoritmoCuadradosMedios from '../algoritmos/algoritmoCuadradosMedios';
 import AlgoritmoMultiplicadorConstante from '../algoritmos/algoritmoMultiplicadorConstante';
 import AlgoritmoLineal from '../algoritmos/algoritmoLineal';
@@ -26,6 +27,7 @@ class Routes extends Component {
     render() {
         return (
             <Switch>
+                <Route exact path="/" component={Home} />
                 <Route exact path="/algoritmo/cuadrados-medios" component={AlgoritmoCuadradosMedios} />
                 <Route exact path="/algoritmo/productos-medios" component={AlgoritmoProductosMedios} />
                 <Route exact path="/algoritmo/multiplicador-constante" component={AlgoritmoMultiplicadorConstante} />

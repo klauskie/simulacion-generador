@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import TitleBar from '../TitleBar/TitleBar';
 
 const PruebaHuecos = () => {
     let [rawList, setRawList] = useState("");
@@ -89,9 +90,7 @@ const PruebaHuecos = () => {
     // set values for the EI column
     const getEi = (table, H) => {
         table.forEach((obj) => {
-            let exp = (obj.i !== 5) ? obj.i : H
-            obj.ei = H * (maxInter - minInter).toFixed(1) * Math.pow((1 - (maxInter - minInter).toFixed(1)), exp)
-            console.log(H, (maxInter - minInter), Math.pow((1 - (maxInter - minInter)), exp))
+            obj.ei = H * (maxInter - minInter).toFixed(1) * Math.pow((1 - (maxInter - minInter).toFixed(1)), obj.i)
         })
         return table
     }
@@ -118,45 +117,51 @@ const PruebaHuecos = () => {
     }
 
     return (
-        <div>
-            <div className='row d-flex justify-content-center'>
-                <h1>
-                    Prueba: Huecos
-                </h1>
-            </div>
+        <div className="container">
+
+            <TitleBar title="Prueba de Huecos" />
+
             <div className='form-group'>
-                <div className="row">
-                    <p>Ingresa los intervalos de prueba: </p>
-                </div>
-                <div className="row">
-                    <div className="col-6 justify-content-end inputs">
-                        <label htmlFor='intervalo0'>Intervalo 0:</label>
-                        <input id='intervalo0' type='number' min='0' max='1' onChange={(e) => setMinInter(e.target.value * 1)} />
+
+                <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon1">Intervalo 0: </span>
+                    </div>
+                    <input id='intervalo0' type='number' min='0' max='1' onChange={(e) => setMinInter(e.target.value * 1)} />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="basic-addon2">min 0</span>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-6 justify-content-end inputs">
-                        <label htmlFor='interval1'>Intervalo 1:</label>
-                        <input id='intervalo1' type='number' min='0' max='1' onChange={(e) => setMaxInter(e.target.value * 1)} />
+
+                <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon1">Intervalo 1: </span>
+                    </div>
+                    <input id='intervalo1' type='number' min='0' max='1' onChange={(e) => setMaxInter(e.target.value * 1)} />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="basic-addon2">max 1</span>
                     </div>
                 </div>
-                <div className='row'>
-                    <div className=''>
-                        <textarea id="list" onChange={(e) => setRawList(e.target.value)} />
+
+                <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon1">Input: </span>
+                    </div>
+                    <textarea id="list" onChange={(e) => setRawList(e.target.value)} />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="basic-addon2">CSV</span>
                     </div>
                 </div>
-                <div className="row">X^2 alpha, m-1:{X2}</div>
-                <div className='row'>
-                    <div className=''>
-                        <div className='btn btn-secondary' onClick={(e) => calculate()}>Generar</div>
-                    </div>
+
+                <div className="input-group mb-3">
+                    <div className='btn btn-primary' onClick={(e) => calculate()}>Generar</div>
                 </div>
                 <div className="row">
                     <p>{getResultMessage()}</p>
                 </div>
             </div>
 
-            <div className="row">
+            {display &&
                 <table className='table'>
                     <thead>
                         <tr>
@@ -187,7 +192,7 @@ const PruebaHuecos = () => {
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            }
         </div>
     )
 }
