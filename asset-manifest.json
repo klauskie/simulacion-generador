@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/simulacion-generador/static/css/main.0d1e6cb5.chunk.css",
+    "main.js": "/simulacion-generador/static/js/main.82889c5e.chunk.js",
+    "main.js.map": "/simulacion-generador/static/js/main.82889c5e.chunk.js.map",
+    "runtime-main.js": "/simulacion-generador/static/js/runtime-main.6654d06e.js",
+    "runtime-main.js.map": "/simulacion-generador/static/js/runtime-main.6654d06e.js.map",
+    "static/js/2.be978986.chunk.js": "/simulacion-generador/static/js/2.be978986.chunk.js",
+    "static/js/2.be978986.chunk.js.map": "/simulacion-generador/static/js/2.be978986.chunk.js.map",
+    "index.html": "/simulacion-generador/index.html",
+    "precache-manifest.7262455d197fdf883192234ebb8d191e.js": "/simulacion-generador/precache-manifest.7262455d197fdf883192234ebb8d191e.js",
+    "service-worker.js": "/simulacion-generador/service-worker.js",
+    "static/css/main.0d1e6cb5.chunk.css.map": "/simulacion-generador/static/css/main.0d1e6cb5.chunk.css.map",
+    "static/js/2.be978986.chunk.js.LICENSE.txt": "/simulacion-generador/static/js/2.be978986.chunk.js.LICENSE.txt",
+    "static/media/gir.png": "/simulacion-generador/static/media/gir.934a3484.png",
+    "static/media/logo.svg": "/simulacion-generador/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6654d06e.js",
+    "static/js/2.be978986.chunk.js",
+    "static/css/main.0d1e6cb5.chunk.css",
+    "static/js/main.82889c5e.chunk.js"
+  ]
+}
