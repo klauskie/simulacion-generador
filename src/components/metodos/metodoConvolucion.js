@@ -11,6 +11,7 @@ const MetodoConvolucion = () => {
     let [media_erlang, setMedia_erlang] = useState(0);
     let [cantidad_piezas_erlang, setCantidad_piezas_erlang] = useState(0);
     let [valores_Xi_erlang, setValores_Xi_erlang] = useState([]);
+    let [erlangResult, setErlangResult] = useState([]);
     // NORMAL
     let [norMedia, setNorMedia] = useState(0);
     let [norDS, setNorDS] = useState(0);
@@ -38,6 +39,7 @@ const MetodoConvolucion = () => {
 
         let num_random = []
         let valores_Xi = []
+        let result = []
 
         for (let i = 0; i < num_erlang; i++) {
             num_random.push([]);
@@ -58,7 +60,20 @@ const MetodoConvolucion = () => {
             multi = 1
         }
 
+        for (let i = 0; i < cantidad_piezas_erlang; i++) {
+            let rs = []
+            for (let j = 0; j < num_erlang; j++) {
+                rs.push(num_random[j][i]);
+            }
+            let obj = {
+                rs: rs.toString(),
+                y: valores_Xi[i]
+            }
+            result.push(obj)
+        }
+
         setValores_Xi_erlang(valores_Xi)
+        setErlangResult(result)
         console.log("num random", num_random);
         console.log("valores xi", valores_Xi);
     }
@@ -230,17 +245,17 @@ const MetodoConvolucion = () => {
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Ri</th>
-                            <th scope="col">Xi</th>
+                            <th scope="col">Yi</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            [].map((e, k) => {
+                            erlangResult.map((e, k) => {
                                 return (
                                     <tr scope="row" key={k}>
                                         <td>{k + 1}</td>
-                                        <td>{e.ri}</td>
-                                        <td>{e.xi.toFixed(2)}</td>
+                                        <td>{e.rs}</td>
+                                        <td>{e.y}</td>
                                     </tr>
                                 )
                             })
