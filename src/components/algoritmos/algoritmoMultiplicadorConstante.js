@@ -29,6 +29,7 @@ const AlgoritmoMultiplicadorConstante = () => {
             setUnvalidA(true);
         } else {
             setUnvalidA(false);
+            alert("La constante y la semilla deben de medir lo mismo")
             let tempArr = [];
             let seedProduct = a * seed;
             let middleSeedValues = modifyNums.getMiddleValues(seedProduct, d);
@@ -49,11 +50,6 @@ const AlgoritmoMultiplicadorConstante = () => {
             <TitleBar title="Algoritmo Multiplicador Constante" />
 
             <div className='form-group'>
-                {
-                    unvalidA ? <div class="alert alert-danger" role="alert">
-                        La constante y la semilla deben de medir lo mismo
-                    </div> : ''
-                }
                 <div className="input-group mb-3">
                     <div className="input-group-prepend">
                         <span className="input-group-text" id="basic-addon1">Semilla 0: </span>

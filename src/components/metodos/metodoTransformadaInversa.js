@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { standardNormalTable, standardDeviation, zScore } from 'simple-statistics'
 import TitleBar from '../TitleBar/TitleBar'
 
 const MetodoTransformadaInversa = () => {
@@ -20,19 +21,30 @@ const MetodoTransformadaInversa = () => {
 
     useEffect(() => {
         if (distSelected === 1) {
+            setDistName("Normal Estándard")
+            setDistFormulaStr("")
+        } else if (distSelected === 2) {
             setDistName("Uniforme")
             setDistFormulaStr("𝑥𝑖=𝑎+(𝑏−𝑎)𝑟𝑖")
-        } else if (distSelected === 2) {
+        } else if (distSelected === 3) {
             setDistName("Exponencial")
             setDistFormulaStr("𝑥𝑖=−1/𝜆 ln⁡(1−𝑟𝑖)")
-        } else if (distSelected === 3) {
+        } else if (distSelected === 4) {
             setDistName("Bernoulli")
             setDistFormulaStr("𝑝(𝑋)=𝑝^𝑥 (1−𝑝)^(1−𝑥)")
-        } else if (distSelected === 4) {
+        } else if (distSelected === 5) {
             setDistName("Poisson")
             setDistFormulaStr("𝑝(𝑥)=  (𝜆^𝑥 𝑒^(−𝜆))/𝑥!")
         }
     }, [distSelected]);
+
+    const calcDistNormal = (list) => {
+        for (let i = -3; i <= 3; i++) {
+            let mean = getMean(list)
+            let sd = standardDeviation(list)
+            console.log(i, mean, sd, zScore(i, mean, sd))
+        }
+    }
 
     const calcDistUniforme = (list) => {
         let tempUniResults = []
@@ -70,6 +82,29 @@ const MetodoTransformadaInversa = () => {
         setBerResults(tempBerResults)
     }
 
+    const calcDistPoisson = (list) => {
+        let table = getProbabilityForPoisson()
+        let tempPoissonResults = []
+        list.forEach((ri) => {
+            let obj = {
+                ri: ri,
+                xi: findInProbTable(table, ri)
+            }
+            tempPoissonResults.push(obj)
+        })
+        setPoiResults(tempPoissonResults)
+    }
+
+    const getMean = (list) => {
+        if (list.length > 0) {
+            let sum = list.reduce((prev, curr) => {
+                return (Number(prev) + Number(curr)).toFixed(4)
+            })
+            return sum / list.length
+        }
+        return 0
+    }
+
     const factorial = (num) => {
         let rval = 1;
         for (let i = 2; i <= num; i++)
@@ -105,29 +140,18 @@ const MetodoTransformadaInversa = () => {
         return 0
     }
 
-    const calcDistPoisson = (list) => {
-        let table = getProbabilityForPoisson()
-        let tempPoissonResults = []
-        list.forEach((ri) => {
-            let obj = {
-                ri: ri,
-                xi: findInProbTable(table, ri)
-            }
-            tempPoissonResults.push(obj)
-        })
-        setPoiResults(tempPoissonResults)
-    }
-
     const calculate = () => {
         let list = inputToList()
 
         if (distSelected === 1) {
-            calcDistUniforme(list)
+            calcDistNormal(list)
         } else if (distSelected === 2) {
-            calcDistExponencial(list)
+            calcDistUniforme(list)
         } else if (distSelected === 3) {
-            calcDistBernoulli(list)
+            calcDistExponencial(list)
         } else if (distSelected === 4) {
+            calcDistBernoulli(list)
+        } else if (distSelected === 5) {
             calcDistPoisson(list)
         }
         setDisplay(true)
@@ -163,10 +187,10 @@ const MetodoTransformadaInversa = () => {
                             {distName}
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <div className="dropdown-item" onClick={(e) => setDistSelected(1)}>Uniforme</div>
-                            <div className="dropdown-item" onClick={(e) => setDistSelected(2)}>Exponencial</div>
-                            <div className="dropdown-item" onClick={(e) => setDistSelected(3)}>Bernoulli</div>
-                            <div className="dropdown-item" onClick={(e) => setDistSelected(4)}>Poisson</div>
+                            <div className="dropdown-item" onClick={(e) => setDistSelected(2)}>Uniforme</div>
+                            <div className="dropdown-item" onClick={(e) => setDistSelected(3)}>Exponencial</div>
+                            <div className="dropdown-item" onClick={(e) => setDistSelected(4)}>Bernoulli</div>
+                            <div className="dropdown-item" onClick={(e) => setDistSelected(5)}>Poisson</div>
                         </div>
                     </div>
                 </div>
@@ -176,10 +200,22 @@ const MetodoTransformadaInversa = () => {
                 </div>
 
             </div>
+            {/* NORMAL */}
+            {distSelected === 1 &&
+                <div className="row">
+                    <div className='form-group'>
 
+                        <div className="input-group mb-3">
+                            <div className='btn btn-primary' onClick={(e) => calculate()}>Calcular</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            }
 
             {/* UNIFORME */}
-            {distSelected === 1 &&
+            {distSelected === 2 &&
                 <div className="row">
                     <div className='form-group'>
 
@@ -205,7 +241,7 @@ const MetodoTransformadaInversa = () => {
                 </div>
 
             }
-            {display && distSelected === 1 &&
+            {display && distSelected === 2 &&
                 <table className='table'>
                     <thead>
                         <tr>
@@ -230,7 +266,7 @@ const MetodoTransformadaInversa = () => {
                 </table>
             }
             {/* EXPONENCIAL */}
-            {distSelected === 2 &&
+            {distSelected === 3 &&
                 <div className="row">
                     <div className='form-group'>
 
@@ -248,7 +284,7 @@ const MetodoTransformadaInversa = () => {
                     </div>
                 </div>
             }
-            {display && distSelected === 2 &&
+            {display && distSelected === 3 &&
                 <table className='table'>
                     <thead>
                         <tr>
@@ -273,7 +309,7 @@ const MetodoTransformadaInversa = () => {
                 </table>
             }
             {/* BERNOULLI */}
-            {distSelected === 3 &&
+            {distSelected === 4 &&
                 <div className="row">
                     <div className='form-group'>
 
@@ -294,7 +330,7 @@ const MetodoTransformadaInversa = () => {
                     </div>
                 </div>
             }
-            {display && distSelected === 3 &&
+            {display && distSelected === 4 &&
                 <table className='table'>
                     <thead>
                         <tr>
@@ -319,7 +355,7 @@ const MetodoTransformadaInversa = () => {
                 </table>
             }
             {/* POISSON */}
-            {distSelected === 4 &&
+            {distSelected === 5 &&
                 <div className="row">
                     <div className='form-group'>
 
@@ -347,7 +383,7 @@ const MetodoTransformadaInversa = () => {
                     </div>
                 </div>
             }
-            {display && distSelected === 4 &&
+            {display && distSelected === 5 &&
                 <table className='table'>
                     <thead>
                         <tr>
@@ -411,5 +447,15 @@ POISSON
 0.5134,
 0.3331
 
+0.357125801,
+0.770024001,
+0.788067728,
+0.224368424,
+0.725242401,
+0.309568122,
+0.539200124,
+0.067144586,
+0.410579805,
+0.12479252
 
 */

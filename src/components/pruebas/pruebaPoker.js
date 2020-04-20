@@ -5,6 +5,11 @@ import TitleBar from "../TitleBar/TitleBar";
 const PruebaPoker = () => {
     const [nums, setNums] = useState([]);
     let [numbersCSVString, setNumbersCSVString] = useState("");
+    let [testRun, setTestRun] = useState(false);
+    let [disable, setDisable] = useState(true);
+    let [fillAlpha, setFillAlpa] = useState(false);
+    let [numlist, setnumList] = useState([]);
+
     const [categories, setCategories] = useState([
         { todoDif: 0 },
         { unPar: 0 },
@@ -34,9 +39,9 @@ const PruebaPoker = () => {
         { total: 0 },
     ]);
 
-    const [alpha, setAlpha] = useState(0.05);
+    const [alpha, setAlpha] = useState(0);
     const [x20, setx20] = useState("");
-    const [chi2, setChi2] = useState("");
+    const [chi2, setChi2] = useState(0);
 
     const class5D = ["TD", "1P", "2P", "1T", "TP", "P", "Q"];
     const prob5D = [0.3024, 0.504, 0.108, 0.009, 0.072, 0.0045, 0.0001];
@@ -48,11 +53,12 @@ const PruebaPoker = () => {
     const prob4D = [0.504, 0.432, 0.027, 0.036, 0.001];
 
     const addCSVValues = () => {
-        let numberList = numbersCSVString.split(",");
+        let numberList = normalizeList(numbersCSVString);
+        setnumList(numberList);
         let noNewLine = numberList.map((x) => x.replace(/(\r\n|\n|\r)/gm, ""));
-        console.log("original", noNewLine);
+        //console.log("original", noNewLine);
         var noDot = noNewLine.map((s) => s.substring(2));
-        console.log("NO DOT", noDot);
+        //console.log("NO DOT", noDot);
         var sorted = noDot.map((x) => {
             let arr = x.split("");
             let sorted = arr.sort((a, b) => a - b);
@@ -62,8 +68,23 @@ const PruebaPoker = () => {
         });
 
         setNums(sorted);
-        console.log(nums);
+        if (fillAlpha) {
+            setDisable(false);
+        } else {
+            setDisable(true);
+        }
     };
+
+    const normalizeList = (rawList) => {
+        let cleanedList = rawList.split(',').map((x) => {
+            return x.trim() * 1
+        })
+        let listStr = cleanedList.map((x) => {
+            return x.toString()
+        })
+        //console.log("caca", listStr)
+        return listStr
+    }
 
     const handleClasifications = () => {
         let todoDif = 0;
@@ -73,7 +94,7 @@ const PruebaPoker = () => {
         let terciaPar = 0;
         let poker = 0;
         let quintilla = 0;
-        console.log("size:", nums[0].length);
+        //console.log("size:", nums[0].length);
 
         if (nums[0].length === 5) {
             let arr = nums.map((str) => {
@@ -89,8 +110,8 @@ const PruebaPoker = () => {
                 all.push(third);
                 all.push(fourth);
                 all.push(fifth);
-                console.log(all);
-                console.log("STR:", str);
+                //console.log(all);
+                //console.log("STR:", str);
 
                 if (all.includes(5)) {
                     quintilla++;
@@ -104,25 +125,24 @@ const PruebaPoker = () => {
                         }
                     }
                     if (count === 4) {
-                        console.log("2P");
+                        //console.log("2P");
                         dosPar++;
                     } else {
                         unPar++;
-                        console.log("1P");
+                        //console.log("1P");
                     }
                 } else if (all.includes(4)) {
-                    console.log("Poker");
+                    //console.log("Poker");
                     poker++;
                 } else if (all.includes(3) && all.includes(1)) {
-                    console.log("1T");
+                    //console.log("1T");
                     unaTercia++;
                 } else {
-                    console.log("TD");
+                    //console.log("TD");
                     todoDif++;
                 }
             });
-
-            setCategories({
+            let tempCat = {
                 todoDif: todoDif,
                 unPar: unPar,
                 dosPares: dosPar,
@@ -130,9 +150,9 @@ const PruebaPoker = () => {
                 terciaPar: terciaPar,
                 poker: poker,
                 quintilla: quintilla,
-            });
-
-            console.log(categories);
+            };
+            setCategories(tempCat);
+            return tempCat;
         } else if (nums[0].length === 4) {
             let arr = nums.map((str) => {
                 let first = str.split(str[0]).length - 1;
@@ -145,7 +165,7 @@ const PruebaPoker = () => {
                 all.push(second);
                 all.push(third);
                 all.push(fourth);
-                console.log(all);
+                //console.log(all);
 
                 if (all.includes(4)) {
                     poker++;
@@ -159,27 +179,30 @@ const PruebaPoker = () => {
                         }
                     }
                     if (count === 4) {
-                        console.log("2P");
+                        //console.log("2P");
                         dosPar++;
                     } else {
                         unPar++;
-                        console.log("1P");
+                        //console.log("1P");
                     }
                 } else {
-                    console.log("TD");
+                    //console.log("TD");
                     todoDif++;
                 }
             });
 
-            setCategories({
+            let tempCat = {
                 todoDif: todoDif,
                 unPar: unPar,
                 dosPares: dosPar,
                 unaTercia: unaTercia,
                 poker: poker,
-            });
+                terciaPar: 0,
+                quintilla: 0,
+            };
 
-            console.log(categories);
+            setCategories(tempCat);
+            return tempCat;
         } else if (nums[0].length === 3) {
             let arr = nums.map((str) => {
                 let first = str.split(str[0]).length - 1;
@@ -190,36 +213,37 @@ const PruebaPoker = () => {
                 all.push(first);
                 all.push(second);
                 all.push(third);
-                console.log(all);
+                //console.log(all);
 
                 if (all.includes(3)) {
                     unaTercia++;
                 } else if (all.includes(2)) {
                     unPar++;
                 } else {
-                    console.log("TD");
+                    //console.log("TD");
                     todoDif++;
                 }
             });
 
-            setCategories({
+            let tempCat = {
                 todoDif: todoDif,
                 unPar: unPar,
-                dosPares: dosPar,
                 unaTercia: unaTercia,
                 poker: poker,
-            });
+                terciaPar: 0,
+                quintilla: 0,
+            };
 
-            console.log(categories);
+            setCategories(tempCat);
+            return tempCat;
         }
     };
 
     const solve5D = () => {
-        handleClasifications();
+        let tempCat = handleClasifications();
 
         if (nums[0].length === 5) {
             let ei = prob5D.map((x) => parseFloat(x) * nums.length);
-            console.log(ei[0]);
             setEi({
                 todoDif: ei[0],
                 unPar: ei[1],
@@ -229,13 +253,13 @@ const PruebaPoker = () => {
                 poker: ei[5],
                 quintilla: ei[6],
             });
-            let td = Math.pow(ei[0] - categories.todoDif, 2) / ei[0];
-            let unP = Math.pow(ei[1] - categories.unPar, 2) / ei[1];
-            let dosP = Math.pow(ei[2] - categories.dosPares, 2) / ei[2];
-            let unT = Math.pow(ei[3] - categories.unaTercia, 2) / ei[3];
-            let terciaP = Math.pow(ei[4] - categories.terciaPar, 2) / ei[4];
-            let p = Math.pow(ei[5] - categories.poker, 2) / ei[5];
-            let q = Math.pow(ei[6] - categories.quintilla, 2) / ei[6];
+            let td = Math.pow(ei[0] - tempCat.todoDif, 2) / ei[0];
+            let unP = Math.pow(ei[1] - tempCat.unPar, 2) / ei[1];
+            let dosP = Math.pow(ei[2] - tempCat.dosPares, 2) / ei[2];
+            let unT = Math.pow(ei[3] - tempCat.unaTercia, 2) / ei[3];
+            let terciaP = Math.pow(ei[4] - tempCat.terciaPar, 2) / ei[4];
+            let p = Math.pow(ei[5] - tempCat.poker, 2) / ei[5];
+            let q = Math.pow(ei[6] - tempCat.quintilla, 2) / ei[6];
             let total = td + unP + dosP + unT + terciaP + p + q;
             setEiOi({
                 todoDif: td,
@@ -247,29 +271,28 @@ const PruebaPoker = () => {
                 quintilla: q,
                 total: total,
             });
-            console.log(total);
+
             setx20(total);
             let chisq = chiSquareInverse.invChiSquareCDF(1 - alpha, 6);
             setChi2(chisq);
-            console.log(chisq);
         } else if (nums[0].length === 4) {
             let ei = prob4D.map((x) => parseFloat(x) * nums.length);
-            console.log("ENTRA:", ei);
+            //console.log("ENTRA:", ei);
             setEi({
                 todoDif: ei[0],
                 unPar: ei[1],
                 dosPares: ei[2],
                 unaTercia: ei[3],
-                terciaPar: "No Aplica",
+                terciaPar: 0,
                 poker: ei[4],
-                quintilla: "No Aplica",
+                quintilla: 0,
             });
-            let td = Math.pow(ei[0] - categories.todoDif, 2) / ei[0];
-            let unP = Math.pow(ei[1] - categories.unPar, 2) / ei[1];
-            let dosP = Math.pow(ei[2] - categories.dosPares, 2) / ei[2];
-            let unT = Math.pow(ei[3] - categories.unaTercia, 2) / ei[3];
+            let td = Math.pow(ei[0] - tempCat.todoDif, 2) / ei[0];
+            let unP = Math.pow(ei[1] - tempCat.unPar, 2) / ei[1];
+            let dosP = Math.pow(ei[2] - tempCat.dosPares, 2) / ei[2];
+            let unT = Math.pow(ei[3] - tempCat.unaTercia, 2) / ei[3];
             let terciaP = 0;
-            let p = Math.pow(ei[4] - categories.poker, 2) / ei[4];
+            let p = Math.pow(ei[4] - tempCat.poker, 2) / ei[4];
             let q = 0;
             let total = td + unP + dosP + unT + terciaP + p + q;
             setEiOi({
@@ -277,31 +300,31 @@ const PruebaPoker = () => {
                 unPar: unP,
                 dosPares: dosP,
                 unaTercia: unT,
-                terciaPar: "No Aplica",
+                terciaPar: 0,
                 poker: p,
-                quintilla: "No Aplica",
+                quintilla: 0,
                 total: total,
             });
-            console.log(total);
+            //console.log(total);
             setx20(total);
             let chisq = chiSquareInverse.invChiSquareCDF(1 - alpha, 6);
             setChi2(chisq);
-            console.log(chisq);
+            //console.log(chisq);
         } else if (nums[0].length === 3) {
             let ei = prob3D.map((x) => parseFloat(x) * nums.length);
             setEi({
                 todoDif: ei[0],
                 unPar: ei[1],
-                dosPares: "No Aplica",
+                dosPares: 0,
                 unaTercia: ei[2],
-                terciaPar: "No Aplica",
-                poker: "No Aplica",
-                quintilla: "No Aplica",
+                terciaPar: 0,
+                poker: 0,
+                quintilla: 0,
             });
-            let td = Math.pow(ei[0] - categories.todoDif, 2) / ei[0];
-            let unP = Math.pow(ei[1] - categories.unPar, 2) / ei[1];
+            let td = Math.pow(ei[0] - tempCat.todoDif, 2) / ei[0];
+            let unP = Math.pow(ei[1] - tempCat.unPar, 2) / ei[1];
             let dosP = 0;
-            let unT = Math.pow(ei[2] - categories.unaTercia, 2) / ei[2];
+            let unT = Math.pow(ei[2] - tempCat.unaTercia, 2) / ei[2];
             let terciaP = 0;
             let p = 0;
             let q = 0;
@@ -309,49 +332,34 @@ const PruebaPoker = () => {
             setEiOi({
                 todoDif: td,
                 unPar: unP,
-                dosPares: "No Aplica",
+                dosPares: 0,
                 unaTercia: unT,
-                terciaPar: "No Aplica",
-                poker: "No Aplica",
-                quintilla: "No Aplica",
+                terciaPar: 0,
+                poker: 0,
+                quintilla: 0,
                 total: total,
             });
-            console.log(total);
+
             setx20(total);
             let chisq = chiSquareInverse.invChiSquareCDF(1 - alpha, 6);
             setChi2(chisq);
-            console.log(chisq);
         }
+        setTestRun(true);
     };
 
-    const handleConclusion = () => {
-        if (chi2 < x20) {
-            return (
-                <div className="card-body">
-                    <h5 className="card-title">
-                        El estadístico X2o = {x20}, comparándolo con nuestro estadístico de
-            tabla = {chi2}, entonces rechazamos que los números del conjunto
-            sean independientes
-          </h5>
-                    <div className="row"></div>
-                </div>
-            );
-        } else {
-            return (
-                <div className="card-body">
-                    <h5 className="card-title">
-                        El estadístico X2o = {x20}, comparándolo con nuestro estadístico de
-            tabla = {chi2}, entonces NO rechazamos que los números del conjunto
-            sean independientes
-          </h5>
-                    <div className="row"></div>
-                </div>
-            );
+    const getResultMessage = () => {
+        if (testRun) {
+            if (chi2 > x20) {
+                return "No se puede rechazar la Ho: " + x20.toFixed(4) + " <  Valor de la tabla: " + chi2.toFixed(4)
+            } else {
+                return "No se rechaza la Ho: " + x20.toFixed(4) + " >  Valor de la tabla: " + chi2.toFixed(4)
+            }
         }
-    };
+    }
 
     return (
         <div className="container">
+
             <TitleBar title="Prueba Poker" />
 
             <div className="form-group">
@@ -359,7 +367,7 @@ const PruebaPoker = () => {
                     <div className="input-group-prepend">
                         <span className="input-group-text" id="basic-addon1">Alpha: </span>
                     </div>
-                    <input type='number' value={alpha} onChange={(e) => setAlpha(e.target.value)} />
+                    <input type='number' onChange={(e) => setAlpha(e.target.value)} />
                     <div className="input-group-append">
                         <span className="input-group-text" id="basic-addon2">nivel de confianza</span>
                     </div>
@@ -372,127 +380,92 @@ const PruebaPoker = () => {
                     <textarea id="csv" onChange={(e) => setNumbersCSVString(e.target.value)} />
                     <div className="input-group-append">
                         <span className="input-group-text" id="basic-addon2">
-                            <div className="btn" onClick={() => addCSVValues()}>Agregar Numeros</div>
+                            <div className="btn btn-primary" onClick={() => addCSVValues()}>Agregar Numeros</div>
                         </span>
                     </div>
                 </div>
 
                 <div className="input-group mb-3">
-                    <div className='btn btn-primary' onClick={(e) => solve5D()}>Run</div>
+                    <div className='btn btn-primary' onClick={(e) => solve5D()}>Correr</div>
                 </div>
             </div>
 
+            <div className="row">{getResultMessage()}</div>
 
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Categorias</th>
-                        <th scope="col">Oi</th>
-                        <th scope="col">Ei</th>
-                        <th scope="col"> (Ei-Oi)^2/Ei </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>TD</td>
-                        <td>{categories.todoDif}</td>
-                        <td>{ei.todoDif}</td>
-                        <td>{eiOi.todoDif}</td>
-                    </tr>
-                    <tr>
-                        <td>1P</td>
-                        <td>{categories.unPar}</td>
-                        <td>{ei.unPar}</td>
-                        <td>{eiOi.unPar}</td>
-                    </tr>
-                    <tr>
-                        <td>2P</td>
-                        <td>{categories.dosPares}</td>
-                        <td>{ei.dosPares}</td>
-                        <td>{eiOi.dosPares}</td>
-                    </tr>
-                    <tr>
-                        <td>T</td>
-                        <td>{categories.unaTercia}</td>
-                        <td>{ei.unaTercia}</td>
-                        <td>{eiOi.unaTercia}</td>
-                    </tr>
-                    <tr>
-                        <td>TP</td>
-                        <td>{categories.terciaPar}</td>
-                        <td>{categories.terciaPar}</td>
-                        <td>{eiOi.terciaPar}</td>
-                    </tr>
-                    <tr>
-                        <td>P</td>
-                        <td>{categories.poker}</td>
-                        <td>{ei.poker}</td>
-                        <td>{eiOi.poker}</td>
-                    </tr>
-                    <tr>
-                        <td>Q</td>
-                        <td>{categories.quintilla}</td>
-                        <td>{ei.quintilla}</td>
-                        <td>{eiOi.quintilla}</td>
-                    </tr>
-                    <tr>
-                        <td>Total</td>
-                        <td></td>
-                        <td></td>
-                        <td>{eiOi.total}</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>CHISQRINV </td>
-                        <td>{chi2}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>
-                <small>
-                    Ingresa los numeros separados por comas y en formato "0.Num", no
-                    ".Num"
-        </small>
-            </p>
-            {handleConclusion()}
-        </div >
+            {testRun ? (
+                <div>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Categorias</th>
+                                <th scope="col">Oi</th>
+                                <th scope="col">Ei</th>
+                                <th scope="col"> (Ei-Oi)^2/Ei </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TD</td>
+                                <td>{categories.todoDif}</td>
+                                <td>{ei.todoDif.toFixed(4)}</td>
+                                <td>{eiOi.todoDif.toFixed(4)}</td>
+                            </tr>
+                            <tr>
+                                <td>1P</td>
+                                <td>{categories.unPar}</td>
+                                <td>{ei.unPar.toFixed(4)}</td>
+                                <td>{eiOi.unPar.toFixed(4)}</td>
+                            </tr>
+                            <tr>
+                                <td>2P</td>
+                                <td>{categories.dosPares}</td>
+                                <td>{ei.dosPares.toFixed(4)}</td>
+                                <td>{eiOi.dosPares.toFixed(4)}</td>
+                            </tr>
+                            <tr>
+                                <td>T</td>
+                                <td>{categories.unaTercia}</td>
+                                <td>{ei.unaTercia.toFixed(4)}</td>
+                                <td>{eiOi.unaTercia.toFixed(4)}</td>
+                            </tr>
+                            <tr>
+                                <td>TP</td>
+                                <td>{categories.terciaPar}</td>
+                                <td>{categories.terciaPar.toFixed(4)}</td>
+                                <td>{eiOi.terciaPar.toFixed(4)}</td>
+                            </tr>
+                            <tr>
+                                <td>P</td>
+                                <td>{categories.poker}</td>
+                                <td>{ei.poker.toFixed(4)}</td>
+                                <td>{eiOi.poker.toFixed(4)}</td>
+                            </tr>
+                            <tr>
+                                <td>Q</td>
+                                <td>{categories.quintilla}</td>
+                                <td>{ei.quintilla.toFixed(4)}</td>
+                                <td>{eiOi.quintilla.toFixed(4)}</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td></td>
+                                <td></td>
+                                <td>{eiOi.total.toFixed(4)}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>CHISQRINV </td>
+                                <td>{chi2.toFixed(4)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            ) : (
+                    ""
+                )}
+        </div>
     );
 };
 
 export default PruebaPoker;
-
-/*
-0.06141,
-0.72484,
-0.94107,
-0.56766,
-0.14411,
-0.87648,
-0.81792,
-0.4899,
-0.18590,
-0.06060,
-0.11223,
-0.64794,
-0.52953,
-0.50502,
-0.30444,
-0.70688,
-0.25357,
-0.31555,
-0.04127,
-0.67347,
-0.28103,
-0.99367,
-0.44598,
-0.73997,
-0.27813,
-0.62182,
-0.82578,
-0.85923,
-0.51483,
-0.09099
-
-
-*/
