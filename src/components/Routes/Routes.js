@@ -27,27 +27,27 @@ class Routes extends Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/algoritmo/cuadrados-medios" component={AlgoritmoCuadradosMedios} />
-                <Route exact path="/algoritmo/productos-medios" component={AlgoritmoProductosMedios} />
-                <Route exact path="/algoritmo/multiplicador-constante" component={AlgoritmoMultiplicadorConstante} />
-                <Route exact path="/algoritmo/lineal" component={AlgoritmoLineal} />
-                <Route exact path="/algoritmo/congruencial-multiplicativo" component={AlgoritmoCongruencialMultiplicativo} />
-                <Route exact path="/algoritmo/congruencial-aditivo" component={AlgoritmoCongruencialAditivo} />
-                <Route exact path="/algoritmo/congruencial-cuadratico" component={AlgoritmoCongruencialCuadratico} />
-                <Route exact path="/prueba/medias" component={PruebaMedias} />
-                <Route exact path="/prueba/varianza" component={PruebaVarianza} />
-                <Route exact path="/prueba/uniformidad-chi-cuadrada" component={PruebaUnidormidadChiCuadrada} />
-                <Route exact path="/prueba/uniformidad-kolmogorov-smirnov" component={PruebaUniformidadKolSmir} />
-                <Route exact path="/prueba/independencia-corridas-arriba-abajo" component={PruebaIndepCorrArrAb} />
-                <Route exact path="/prueba/independencia-corridas-arriba-abajo-media" component={PruebaCorrArrAbMed} />
-                <Route exact path="/prueba/poker" component={PruebaPoker} />
-                <Route exact path="/prueba/series" component={PruebaSerie} />
-                <Route exact path="/prueba/huecos" component={PruebaHuecos} />
-                <Route exact path="/prueba/distribucion-chi-cuadrada" component={PruebaDstrbcnChiCdrd} />
-                <Route exact path="/prueba/kolmogorov-smirnov" component={PruebaKolSmir} />
-                <Route exact path="/metodo/transformada-inversa" component={MetodoTransformadaInversa} />
-                <Route exact path="/metodo/convolucion" component={MetodoConvolucion} />
+                <Route exact path="/simulacion-generador" component={Home} />
+                <Route exact path="/simulacion-generador/algoritmo/cuadrados-medios" component={AlgoritmoCuadradosMedios} />
+                <Route exact path="/simulacion-generador/algoritmo/productos-medios" component={AlgoritmoProductosMedios} />
+                <Route exact path="/simulacion-generador/algoritmo/multiplicador-constante" component={AlgoritmoMultiplicadorConstante} />
+                <Route exact path="/simulacion-generador/algoritmo/lineal" component={AlgoritmoLineal} />
+                <Route exact path="/simulacion-generador/algoritmo/congruencial-multiplicativo" component={AlgoritmoCongruencialMultiplicativo} />
+                <Route exact path="/simulacion-generador/algoritmo/congruencial-aditivo" component={AlgoritmoCongruencialAditivo} />
+                <Route exact path="/simulacion-generador/algoritmo/congruencial-cuadratico" component={AlgoritmoCongruencialCuadratico} />
+                <Route exact path="/simulacion-generador/prueba/medias" component={PruebaMedias} />
+                <Route exact path="/simulacion-generador/prueba/varianza" component={PruebaVarianza} />
+                <Route exact path="/simulacion-generador/prueba/uniformidad-chi-cuadrada" component={PruebaUnidormidadChiCuadrada} />
+                <Route exact path="/simulacion-generador/prueba/uniformidad-kolmogorov-smirnov" component={PruebaUniformidadKolSmir} />
+                <Route exact path="/simulacion-generador/prueba/independencia-corridas-arriba-abajo" component={PruebaIndepCorrArrAb} />
+                <Route exact path="/simulacion-generador/prueba/independencia-corridas-arriba-abajo-media" component={PruebaCorrArrAbMed} />
+                <Route exact path="/simulacion-generador/prueba/poker" component={PruebaPoker} />
+                <Route exact path="/simulacion-generador/prueba/series" component={PruebaSerie} />
+                <Route exact path="/simulacion-generador/prueba/huecos" component={PruebaHuecos} />
+                <Route exact path="/simulacion-generador/prueba/distribucion-chi-cuadrada" component={PruebaDstrbcnChiCdrd} />
+                <Route exact path="/simulacion-generador/prueba/kolmogorov-smirnov" component={PruebaKolSmir} />
+                <Route exact path="/simulacion-generador/metodo/transformada-inversa" component={MetodoTransformadaInversa} />
+                <Route exact path="/simulacion-generador/metodo/convolucion" component={MetodoConvolucion} />
             </Switch >
         );
     }
